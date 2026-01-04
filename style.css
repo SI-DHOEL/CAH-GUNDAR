@@ -16,9 +16,46 @@ body {
     display: flex;
     flex-direction: column;
     overflow-x: hidden;
+    position: relative;
 }
 
-/* Background Abstract Glow */
+/* --- NEW: FLOATING PARTICLES (BACKGROUND HIDUP) --- */
+.particles-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    z-index: -1;
+    pointer-events: none; /* Biar gak ganggu klik */
+}
+
+.particle {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: #D4AF37;
+    border-radius: 50%;
+    opacity: 0.3;
+    animation: float 20s infinite linear;
+}
+
+/* Posisi & Durasi Random buat Partikel */
+.particle:nth-child(1) { top: 10%; left: 10%; animation-duration: 25s; opacity: 0.2; }
+.particle:nth-child(2) { top: 20%; left: 80%; animation-duration: 30s; width: 6px; height: 6px; }
+.particle:nth-child(3) { top: 80%; left: 20%; animation-duration: 22s; }
+.particle:nth-child(4) { top: 60%; left: 60%; animation-duration: 28s; opacity: 0.1; }
+.particle:nth-child(5) { top: 40%; left: 40%; animation-duration: 35s; width: 3px; height: 3px; }
+.particle:nth-child(6) { top: 90%; left: 90%; animation-duration: 40s; }
+
+@keyframes float {
+    0% { transform: translateY(0) translateX(0); opacity: 0; }
+    50% { opacity: 0.5; }
+    100% { transform: translateY(-100vh) translateX(50px); opacity: 0; }
+}
+
+/* Background Glow Lama (Base Layer) */
 .background-glow {
     position: fixed;
     top: -50%;
@@ -26,7 +63,7 @@ body {
     width: 200%;
     height: 200%;
     background: radial-gradient(circle, rgba(212, 175, 55, 0.05) 0%, rgba(10, 10, 10, 0) 60%);
-    z-index: -1;
+    z-index: -2;
     animation: rotate 30s linear infinite;
 }
 
@@ -55,6 +92,8 @@ header {
     font-size: 3rem;
     color: #0a0a0a;
     box-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
+    /* Biar efek 3D tilt kerasa di border */
+    border: 2px solid rgba(255, 255, 255, 0.1);
 }
 
 h1 {
@@ -72,11 +111,11 @@ h1 {
     letter-spacing: 2px;
     text-transform: uppercase;
     font-size: 0.8rem;
-    min-height: 1.5em; /* Menjaga tinggi biar gak lompat pas ngetik */
+    min-height: 1.5em; 
 }
 
 /* =========================================
-   3. MAIN LAYOUT
+   3. MAIN LAYOUT & TITLES
    ========================================= */
 main {
     max-width: 800px;
@@ -97,7 +136,7 @@ main {
 }
 
 /* =========================================
-   4. SLIDER STYLES (JADWAL)
+   4. SLIDER STYLES
    ========================================= */
 .slider-container {
     position: relative;
@@ -132,7 +171,6 @@ main {
     display: block;
 }
 
-/* Tombol Navigasi Slider */
 .slider-btn {
     position: absolute;
     top: 50%;
@@ -152,11 +190,7 @@ main {
     justify-content: center;
 }
 
-.slider-btn:hover {
-    background: #D4AF37;
-    color: #000;
-}
-
+.slider-btn:hover { background: #D4AF37; color: #000; }
 .prev-btn { left: 15px; }
 .next-btn { right: 15px; }
 
@@ -173,14 +207,112 @@ main {
 }
 
 /* =========================================
-   5. CHATBOT STYLES
+   5. NEW: PRODUCTIVITY ZONE STYLES
+   ========================================= */
+.prod-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+}
+
+.todo-card, .calc-card {
+    padding: 1.5rem;
+    height: 100%;
+    min-height: 350px;
+    display: flex;
+    flex-direction: column;
+    /* Reuse card base style */
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+}
+
+.todo-card h3, .calc-card h3 {
+    color: #D4AF37;
+    font-family: 'Cinzel', serif;
+    font-size: 1rem;
+    margin-bottom: 1rem;
+    text-align: center;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    padding-bottom: 0.5rem;
+}
+
+/* --- To-Do List Styling --- */
+.todo-input-area { display: flex; gap: 10px; margin-bottom: 1rem; }
+#todo-input { 
+    flex: 1; 
+    background: rgba(255,255,255,0.05); 
+    border: 1px solid rgba(255,255,255,0.1); 
+    padding: 8px 12px; 
+    border-radius: 8px; 
+    color: #fff; 
+    outline: none; 
+}
+#add-todo-btn { 
+    background: #D4AF37; 
+    border: none; 
+    width: 35px; 
+    border-radius: 8px; 
+    cursor: pointer; 
+    color: #000; 
+}
+.todo-list { list-style: none; overflow-y: auto; flex: 1; max-height: 200px; }
+/* Scrollbar Todo */
+.todo-list::-webkit-scrollbar { width: 4px; }
+.todo-list::-webkit-scrollbar-thumb { background: #333; }
+
+.todo-item { 
+    background: rgba(0,0,0,0.3); 
+    padding: 8px 12px; 
+    margin-bottom: 8px; 
+    border-radius: 6px; 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    font-size: 0.85rem; 
+    border-left: 2px solid #D4AF37; 
+    animation: fadeIn 0.3s; 
+}
+.todo-item.done { text-decoration: line-through; opacity: 0.5; border-left-color: #555; }
+.delete-todo { background: transparent; border: none; color: #ff4444; cursor: pointer; margin-left: 10px; }
+
+/* --- Calculator Styling --- */
+.calc-wrapper { display: flex; flex-direction: column; gap: 10px; }
+.calc-row { display: flex; gap: 10px; }
+.sks-input { width: 50%; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); padding: 8px; border-radius: 6px; color: #fff; text-align: center; }
+.grade-input { width: 50%; background: #333; color: #fff; border: none; border-radius: 6px; padding: 8px; cursor: pointer; }
+
+.action-btn { 
+    background: linear-gradient(135deg, #D4AF37, #8a6e18); 
+    border: none; 
+    padding: 10px; 
+    border-radius: 8px; 
+    color: #000; 
+    font-weight: bold; 
+    cursor: pointer; 
+    margin-top: 10px; 
+    transition: transform 0.2s; 
+}
+.action-btn:hover { transform: scale(1.02); }
+.ip-result { text-align: center; font-size: 1.5rem; font-weight: bold; color: #D4AF37; margin-top: 10px; text-shadow: 0 0 10px rgba(212,175,55,0.3); }
+
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+/* =========================================
+   6. CHATBOT STYLES
    ========================================= */
 .chat-card {
     padding: 0 !important;
-    height: 450px; /* Tinggi tetap agar bisa di-scroll */
+    height: 450px; 
     display: flex;
     flex-direction: column;
     overflow: hidden;
+    /* Base Style Card */
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
 }
 
 .chat-header {
@@ -197,13 +329,11 @@ main {
 .chat-messages {
     flex: 1;
     padding: 1rem;
-    overflow-y: auto; /* Scroll otomatis */
+    overflow-y: auto; 
     display: flex;
     flex-direction: column;
     gap: 10px;
 }
-
-/* Custom Scrollbar Chat */
 .chat-messages::-webkit-scrollbar { width: 5px; }
 .chat-messages::-webkit-scrollbar-thumb { background: #333; border-radius: 10px; }
 
@@ -215,21 +345,8 @@ main {
     line-height: 1.4;
     word-wrap: break-word;
 }
-
-.message.bot {
-    align-self: flex-start;
-    background: rgba(255, 255, 255, 0.1);
-    color: #e0e0e0;
-    border-bottom-left-radius: 2px;
-}
-
-.message.user {
-    align-self: flex-end;
-    background: #D4AF37;
-    color: #000;
-    font-weight: 600;
-    border-bottom-right-radius: 2px;
-}
+.message.bot { align-self: flex-start; background: rgba(255, 255, 255, 0.1); color: #e0e0e0; border-bottom-left-radius: 2px; }
+.message.user { align-self: flex-end; background: #D4AF37; color: #000; font-weight: 600; border-bottom-right-radius: 2px; }
 
 .chat-input-area {
     padding: 1rem;
@@ -268,7 +385,7 @@ main {
 #send-btn:hover { transform: scale(1.1); background: #fff; }
 
 /* =========================================
-   6. LINK GRID & CARDS
+   7. LINK GRID & CARDS
    ========================================= */
 .grid-container {
     display: grid;
@@ -289,7 +406,7 @@ main {
     flex-direction: column;
     align-items: center;
     text-align: center;
-    /* Persiapan buat efek 3D Tilt */
+    /* Penting buat efek 3D Tilt JS */
     transform-style: preserve-3d;
     transform: perspective(1000px);
 }
@@ -297,7 +414,7 @@ main {
 .card:hover {
     background: rgba(255, 255, 255, 0.08);
     border-color: #D4AF37;
-    transform: translateY(-5px); /* Tetap ada fallback animasi CSS */
+    /* Hapus translateY manual biar gak bentrok sama Vanilla Tilt JS */
     box-shadow: 0 0 15px rgba(212, 175, 55, 0.1);
 }
 
@@ -305,13 +422,10 @@ main {
 .card h3 { font-size: 0.9rem; margin-bottom: 0.2rem; font-weight: 600; }
 .card p { font-size: 0.7rem; color: #888; }
 
-/* Highlight Studentsite (Standard) */
 .card.highlight { 
     background: linear-gradient(135deg, rgba(212, 175, 55, 0.1), rgba(0,0,0,0)); 
     border: 1px solid rgba(212, 175, 55, 0.3); 
 }
-
-/* Highlight Gold Khusus (VM LEPKOM) */
 .card.highlight-gold { 
     background: linear-gradient(135deg, rgba(255, 215, 0, 0.15), rgba(0,0,0,0)); 
     border: 1px solid rgba(255, 215, 0, 0.5); 
@@ -319,7 +433,7 @@ main {
 }
 
 /* =========================================
-   7. BUTTONS & FOOTER
+   8. FOOTER & BUTTONS
    ========================================= */
 .group-wa-container { margin-top: 2rem; text-align: center; }
 
@@ -345,12 +459,16 @@ footer {
 }
 
 /* =========================================
-   8. RESPONSIVE DESIGN (HP)
+   9. RESPONSIVE DESIGN (HP)
    ========================================= */
 @media (max-width: 600px) {
     .grid-container { grid-template-columns: repeat(2, 1fr); }
     .slider-btn { width: 35px; height: 35px; font-size: 1rem; }
     h1 { font-size: 1.8rem; }
-    .chat-card { height: 400px; } /* Chatbot sedikit lebih pendek di HP */
+    
+    /* Atur Productivity Zone jadi susun ke bawah di HP */
+    .prod-grid { grid-template-columns: 1fr; }
+    
+    .chat-card { height: 400px; }
     .section-title { font-size: 1.2rem; }
 }
