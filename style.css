@@ -1,4 +1,6 @@
-/* Base & Reset */
+/* =========================================
+   1. BASE & RESET
+   ========================================= */
 * {
     margin: 0;
     padding: 0;
@@ -16,7 +18,7 @@ body {
     overflow-x: hidden;
 }
 
-/* Background Glow */
+/* Background Abstract Glow */
 .background-glow {
     position: fixed;
     top: -50%;
@@ -27,12 +29,15 @@ body {
     z-index: -1;
     animation: rotate 30s linear infinite;
 }
+
 @keyframes rotate {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
 }
 
-/* Header */
+/* =========================================
+   2. HEADER & PROFILE
+   ========================================= */
 header {
     text-align: center;
     padding: 3rem 1rem 2rem;
@@ -67,8 +72,12 @@ h1 {
     letter-spacing: 2px;
     text-transform: uppercase;
     font-size: 0.8rem;
+    min-height: 1.5em; /* Menjaga tinggi biar gak lompat pas ngetik */
 }
 
+/* =========================================
+   3. MAIN LAYOUT
+   ========================================= */
 main {
     max-width: 800px;
     margin: 0 auto;
@@ -87,7 +96,9 @@ main {
     gap: 10px;
 }
 
-/* --- SLIDER STYLES --- */
+/* =========================================
+   4. SLIDER STYLES (JADWAL)
+   ========================================= */
 .slider-container {
     position: relative;
     width: 100%;
@@ -99,7 +110,6 @@ main {
     padding: 0 !important; 
 }
 
-/* Jalur Slide */
 .slider-track {
     display: flex;
     transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1); 
@@ -162,10 +172,12 @@ main {
     border: 1px solid rgba(255,255,255,0.1);
 }
 
-/* --- CHATBOT STYLES (MENGGANTIKAN NOTES) --- */
+/* =========================================
+   5. CHATBOT STYLES
+   ========================================= */
 .chat-card {
     padding: 0 !important;
-    height: 450px; /* Tinggi tetap biar bisa scroll */
+    height: 450px; /* Tinggi tetap agar bisa di-scroll */
     display: flex;
     flex-direction: column;
     overflow: hidden;
@@ -185,13 +197,13 @@ main {
 .chat-messages {
     flex: 1;
     padding: 1rem;
-    overflow-y: auto; /* Scroll otomatis kalau chat panjang */
+    overflow-y: auto; /* Scroll otomatis */
     display: flex;
     flex-direction: column;
     gap: 10px;
 }
 
-/* Scrollbar tipis buat chat */
+/* Custom Scrollbar Chat */
 .chat-messages::-webkit-scrollbar { width: 5px; }
 .chat-messages::-webkit-scrollbar-thumb { background: #333; border-radius: 10px; }
 
@@ -255,7 +267,9 @@ main {
 }
 #send-btn:hover { transform: scale(1.1); background: #fff; }
 
-/* --- LINKS GRID --- */
+/* =========================================
+   6. LINK GRID & CARDS
+   ========================================= */
 .grid-container {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
@@ -275,12 +289,15 @@ main {
     flex-direction: column;
     align-items: center;
     text-align: center;
+    /* Persiapan buat efek 3D Tilt */
+    transform-style: preserve-3d;
+    transform: perspective(1000px);
 }
 
 .card:hover {
     background: rgba(255, 255, 255, 0.08);
     border-color: #D4AF37;
-    transform: translateY(-5px);
+    transform: translateY(-5px); /* Tetap ada fallback animasi CSS */
     box-shadow: 0 0 15px rgba(212, 175, 55, 0.1);
 }
 
@@ -301,17 +318,39 @@ main {
     box-shadow: 0 0 10px rgba(255, 215, 0, 0.1);
 }
 
-/* WA Button */
+/* =========================================
+   7. BUTTONS & FOOTER
+   ========================================= */
 .group-wa-container { margin-top: 2rem; text-align: center; }
-.wa-btn { display: inline-block; background: #25D366; color: #fff; padding: 0.8rem 2rem; border-radius: 50px; text-decoration: none; font-weight: bold; transition: transform 0.2s; box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3); }
-.wa-btn:hover { transform: scale(1.05); }
 
-footer { text-align: center; padding: 2rem; font-size: 0.8rem; color: #666; border-top: 1px solid rgba(255, 255, 255, 0.05); }
+.wa-btn { 
+    display: inline-block; 
+    background: #25D366; 
+    color: #fff; 
+    padding: 0.8rem 2rem; 
+    border-radius: 50px; 
+    text-decoration: none; 
+    font-weight: bold; 
+    transition: transform 0.2s, box-shadow 0.2s; 
+    box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3); 
+}
+.wa-btn:hover { transform: scale(1.05); box-shadow: 0 6px 20px rgba(37, 211, 102, 0.5); }
 
-/* Mobile Responsive */
+footer { 
+    text-align: center; 
+    padding: 2rem; 
+    font-size: 0.8rem; 
+    color: #666; 
+    border-top: 1px solid rgba(255, 255, 255, 0.05); 
+}
+
+/* =========================================
+   8. RESPONSIVE DESIGN (HP)
+   ========================================= */
 @media (max-width: 600px) {
     .grid-container { grid-template-columns: repeat(2, 1fr); }
     .slider-btn { width: 35px; height: 35px; font-size: 1rem; }
     h1 { font-size: 1.8rem; }
-    .chat-card { height: 400px; } /* Chatbot agak pendek di HP */
+    .chat-card { height: 400px; } /* Chatbot sedikit lebih pendek di HP */
+    .section-title { font-size: 1.2rem; }
 }

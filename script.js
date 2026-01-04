@@ -1,9 +1,10 @@
-// --- 1. SLIDER LOGIC (SAMA) ---
+// --- 1. SLIDER LOGIC (GESER GAMBAR) ---
 const track = document.getElementById('slider-track');
 const slides = document.querySelectorAll('.slide');
 const nextBtn = document.getElementById('nextBtn');
 const prevBtn = document.getElementById('prevBtn');
 const slideCounter = document.getElementById('slide-counter');
+
 let currentIndex = 0;
 const totalSlides = slides.length;
 
@@ -11,15 +12,44 @@ function updateSlidePosition() {
     track.style.transform = `translateX(-${currentIndex * 100}%)`;
     slideCounter.textContent = `Slide ${currentIndex + 1} / ${totalSlides}`;
 }
-nextBtn.addEventListener('click', () => { currentIndex = (currentIndex === totalSlides - 1) ? 0 : currentIndex + 1; updateSlidePosition(); });
-prevBtn.addEventListener('click', () => { currentIndex = (currentIndex === 0) ? totalSlides - 1 : currentIndex - 1; updateSlidePosition(); });
-let autoSlide = setInterval(() => { nextBtn.click(); }, 5000);
-const stopAutoSlide = () => { clearInterval(autoSlide); autoSlide = setInterval(() => { nextBtn.click(); }, 5000); };
+
+nextBtn.addEventListener('click', () => {
+    if (currentIndex === totalSlides - 1) {
+        currentIndex = 0; 
+    } else {
+        currentIndex++;
+    }
+    updateSlidePosition();
+});
+
+prevBtn.addEventListener('click', () => {
+    if (currentIndex === 0) {
+        currentIndex = totalSlides - 1; 
+    } else {
+        currentIndex--;
+    }
+    updateSlidePosition();
+});
+
+// Auto Slide (Geser tiap 5 detik)
+let autoSlide = setInterval(() => {
+    nextBtn.click();
+}, 5000);
+
+// Stop Auto Slide kalau tombol diklik biar gak ganggu
+const stopAutoSlide = () => {
+    clearInterval(autoSlide);
+    autoSlide = setInterval(() => {
+        nextBtn.click();
+    }, 5000); 
+};
+
 nextBtn.addEventListener('click', stopAutoSlide);
 prevBtn.addEventListener('click', stopAutoSlide);
 
-// --- 2. CHATBOT LOGIC (DATA JADWAL MANUAL 1IA14) ---
-// Data diambil dari gambar jadwal yang dikirim
+
+// --- 2. CHATBOT LOGIC (ASISTEN JADWAL 1IA14) ---
+// Database Jadwal Manual
 const scheduleData = {
     // Senin: Jam 1/2, 3/4, 6/7
     senin: [
@@ -27,7 +57,7 @@ const scheduleData = {
         "🕒 09.30 - 11.30 (Jam 3/4)<br>📚 <b>Peng. Tekno. Komp. & Inf. A</b><br>🏫 Ruang J1110 - Dosen: WIWIED WIDIYANINGSIH",
         "🕒 12.30 - 14.30 (Jam 6/7)<br>📚 <b>Peng. Tekno. Komp. & Inf. B</b><br>🏫 Ruang J1110 - Dosen: ANGGRAENI RIDWAN"
     ],
-    // Selasa: Kosong di gambar
+    // Selasa: Kosong
     selasa: [
         "✅ <b>Tidak ada jadwal kuliah</b> di hari Selasa. Bisa nugas atau healing lur!"
     ],
@@ -45,7 +75,7 @@ const scheduleData = {
         "🕒 11.30 - 13.30 (Jam 5/6)<br>📚 <b>Algoritma & Pemrograman 1C</b><br>🏫 Ruang J153 - Dosen: MITA LAILASARI",
         "🕒 14.30 - 16.30 (Jam 8/9)<br>📚 <b>Fisika & Kimia Dasar 1A</b><br>🏫 Ruang J153 - Dosen: EKO APRIANTO NUGROHO"
     ],
-    // Jumat: Kosong di gambar
+    // Jumat: Kosong
     jumat: [
         "✅ <b>Free Class!</b> Hari Jumat kosong lur. Siap-siap buat weekend."
     ],
@@ -83,10 +113,27 @@ function getBotResponse(input) {
     if (input.includes('besok')) {
         let tomorrowIdx = (today + 1) % 7;
         targetDay = daysMap[tomorrowIdx];
-    } else if (input.includes('hari ini') || input.includes('sekarang')) {
-        targetDay = daysMap[today];
+    } else if (input.includes('hari ini') || input.includes('sekarang') || input.includes('jadwal')) {
+        // Kalau cuma ketik "jadwal", asumsinya jadwal hari ini
+        if(input === 'jadwal') {
+            targetDay = daysMap[today];
+        } else if (input.includes('hari ini') || input.includes('sekarang')) {
+            targetDay = daysMap[today];
+        } else {
+             // Cek nama hari manual (misal: "jadwal senin")
+            for (let day of daysMap) {
+                if (input.includes(day)) {
+                    targetDay = day;
+                    break;
+                }
+            }
+            // Kalau gak nemu hari, default ke hari ini (opsional, atau kasih pesan error)
+            if (!targetDay && input.includes('jadwal')) {
+                 // Coba cari hari lagi
+            }
+        }
     } else {
-        // Cek nama hari manual
+        // Cek nama hari manual tanpa kata "jadwal"
         for (let day of daysMap) {
             if (input.includes(day)) {
                 targetDay = day;
@@ -97,11 +144,11 @@ function getBotResponse(input) {
 
     // Return Jawaban
     if (targetDay && scheduleData[targetDay]) {
-        let response = `<b>Jadwal ${targetDay.toUpperCase()}:</b><br><br>`;
+        let response = `<b>📅 Jadwal ${targetDay.toUpperCase()}:</b><br><br>`;
         response += scheduleData[targetDay].join('<br><br>');
         return response;
     } else {
-        return "Waduh, gue ga paham. Coba tanya: <b>'Jadwal Senin'</b>, <b>'Besok ada apa'</b>, atau <b>'Hari ini'</b>.";
+        return "🤖 Waduh, bot belum paham. Coba ketik: <b>'Jadwal Senin'</b>, <b>'Besok'</b>, atau <b>'Hari ini'</b>.";
     }
 }
 
@@ -112,7 +159,7 @@ sendBtn.addEventListener('click', () => {
         addMessage(text, 'user');
         userInput.value = '';
         
-        // Simulasi mikir bentar
+        // Simulasi mikir bentar (biar kayak ngetik beneran)
         setTimeout(() => {
             const reply = getBotResponse(text);
             addMessage(reply, 'bot');
@@ -120,12 +167,59 @@ sendBtn.addEventListener('click', () => {
     }
 });
 
-// Event Tekan Enter
+// Event Tekan Enter di Input
 userInput.addEventListener('keypress', (e) => {
     if (e.key === 'Enter') sendBtn.click();
 });
 
 
-// --- 3. YEAR FOOTER ---
+// --- 3. SAPAAN REAL-TIME (GREETING TYPEWRITER) ---
+const hour = new Date().getHours();
+const greetingElement = document.querySelector('.subtitle'); 
+
+let greetingText = '';
+if (hour >= 4 && hour < 11) {
+    greetingText = '🌄 Selamat Pagi, Semangat Kuliah!';
+} else if (hour >= 11 && hour < 15) {
+    greetingText = '☀️ Selamat Siang, Jangan Lupa Makan!';
+} else if (hour >= 15 && hour < 18) {
+    greetingText = '🌇 Selamat Sore, Tetap Produktif!';
+} else {
+    greetingText = '🌙 Selamat Malam, Waktunya Istirahat.';
+}
+
+// Efek Typewriter
+if(greetingElement) {
+    let i = 0;
+    greetingElement.innerHTML = ''; 
+    greetingElement.style.color = '#D4AF37'; // Ubah warna teks sapaan jadi emas
+    greetingElement.style.fontWeight = 'bold';
+
+    function typeWriter() {
+        if (i < greetingText.length) {
+            greetingElement.innerHTML += greetingText.charAt(i);
+            i++;
+            setTimeout(typeWriter, 50); // Kecepatan ngetik
+        }
+    }
+    // Delay dikit sebelum mulai ngetik biar loading page kelar
+    setTimeout(typeWriter, 500);
+}
+
+
+// --- 4. TAHUN OTOMATIS & 3D TILT ---
 document.getElementById('year').textContent = new Date().getFullYear();
-console.log("Dashboard Loaded. Chatbot Active.");
+
+// Inisialisasi Vanilla Tilt (Efek 3D Kartu)
+// Pastikan script vanilla-tilt.min.js udah ada di index.html
+if (typeof VanillaTilt !== 'undefined') {
+    VanillaTilt.init(document.querySelectorAll(".tilt-card"), {
+        max: 10,           
+        speed: 400,        
+        glare: true,       
+        "max-glare": 0.2,  
+        gyroscope: true,  
+    });
+}
+
+console.log("Dashboard Loaded. All Systems (Slider, Chatbot, Greeting, Tilt) Active.");
