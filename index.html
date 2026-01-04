@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gunadarma Dashboard Pro | Student Portal</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="background-glow"></div>
+
+    <header>
+        <div class="profile-container">
+            <div class="profile-pic">
+                <i class="fa-solid fa-user-graduate"></i>
+            </div>
+            <h1>Mahasiswa Gunadarma</h1>
+            <p class="subtitle">Executive Academic Dashboard</p>
+        </div>
+    </header>
+
+    <main>
+        
+        <section class="schedule-section">
+            <h2 class="section-title"><i class="fa-regular fa-calendar-days"></i> Galeri Jadwal</h2>
+            
+            <div class="slider-container card">
+                <div class="slider-track" id="slider-track">
+                    <div class="slide"><img src="jadwal1.jpg" alt="Jadwal 1"></div>
+                    <div class="slide"><img src="jadwal2.jpg" alt="Jadwal 2"></div>
+                    <div class="slide"><img src="jadwal3.jpg" alt="Jadwal 3"></div>
+                    <div class="slide"><img src="jadwal4.jpg" alt="Jadwal 4"></div>
+                    <div class="slide"><img src="jadwal5.jpg" alt="Jadwal 5"></div>
+                    <div class="slide"><img src="jadwal6.jpg" alt="Jadwal 6"></div>
+                    <div class="slide"><img src="jadwal7.jpg" alt="Jadwal 7"></div>
+                </div>
+
+                <button class="slider-btn prev-btn" id="prevBtn"><i class="fa-solid fa-chevron-left"></i></button>
+                <button class="slider-btn next-btn" id="nextBtn"><i class="fa-solid fa-chevron-right"></i></button>
+                
+                <div class="slider-info">
+                    <span id="slide-counter">Slide 1 / 7</span>
+                </div>
+            </div>
+        </section>
+
+        <section class="chatbot-section">
+            <h2 class="section-title"><i class="fa-solid fa-robot"></i> Asisten Jadwal</h2>
+            <div class="chat-card card">
+                <div class="chat-header">
+                    <span>GundarBot v1.0</span>
+                    <small>Tanya jadwal: "Besok ada apa?", "Jadwal Kamis"</small>
+                </div>
+                <div class="chat-messages" id="chat-messages">
+                    <div class="message bot">Halo lur! Mau nanya jadwal hari apa? (Ketik: "Besok", "Senin", atau "Hari ini")</div>
+                </div>
+                <div class="chat-input-area">
+                    <input type="text" id="user-input" placeholder="Ketik pertanyaan...">
+                    <button id="send-btn"><i class="fa-solid fa-paper-plane"></i></button>
+                </div>
+            </div>
+        </section>
+
+        <section class="links-section">
+            <h2 class="section-title"><i class="fa-solid fa-link"></i> Akses Cepat</h2>
+            
+            <div class="grid-container">
+                <a href="https://studentsite.gunadarma.ac.id" target="_blank" class="card highlight">
+                    <div class="icon"><i class="fa-solid fa-id-card"></i></div>
+                    <h3>Studentsite</h3>
+                    <p>Portal Mahasiswa</p>
+                </a>
+                
+                <a href="https://v-class.gunadarma.ac.id" target="_blank" class="card">
+                    <div class="icon"><i class="fa-solid fa-chalkboard-user"></i></div>
+                    <h3>V-Class</h3>
+                    <p>Virtual Class</p>
+                </a>
+
+                <a href="https://share.google/3UQANtR9lbAXoYCVB" target="_blank" class="card highlight-gold">
+                    <div class="icon"><i class="fa-solid fa-server"></i></div>
+                    <h3>VM LEPKOM</h3>
+                    <p>Virtual Machine Lab</p>
+                </a>
+
+                <a href="https://baak.gunadarma.ac.id" target="_blank" class="card">
+                    <div class="icon"><i class="fa-solid fa-building-columns"></i></div>
+                    <h3>BAAK</h3>
+                    <p>Akademik</p>
+                </a>
+
+                <a href="https://gunadarma.ac.id" target="_blank" class="card">
+                    <div class="icon"><i class="fa-solid fa-globe"></i></div>
+                    <h3>Web Utama</h3>
+                    <p>Info Kampus</p>
+                </a>
+
+                <a href="https://library.gunadarma.ac.id" target="_blank" class="card">
+                    <div class="icon"><i class="fa-solid fa-book"></i></div>
+                    <h3>Library</h3>
+                    <p>Perpustakaan</p>
+                </a>
+
+                <a href="https://ujian.gunadarma.ac.id/index.aspx" target="_blank" class="card">
+                    <div class="icon"><i class="fa-solid fa-laptop-code"></i></div>
+                    <h3>UAS Online</h3>
+                    <p>Portal Ujian</p>
+                </a>
+
+                 <a href="https://psa.gunadarma.ac.id" target="_blank" class="card">
+                    <div class="icon"><i class="fa-solid fa-file-invoice"></i></div>
+                    <h3>PSA Online</h3>
+                    <p>Surat Menyurat</p>
+                </a>
+
+                <a href="http://semesterpendek.gunadarma.ac.id" target="_blank" class="card">
+                    <div class="icon"><i class="fa-solid fa-clock-rotate-left"></i></div>
+                    <h3>UM / SP</h3>
+                    <p>Ujian Mandiri</p>
+                </a>
+
+                 <a href="https://kemahasiswaan.gunadarma.ac.id" target="_blank" class="card">
+                    <div class="icon"><i class="fa-solid fa-graduation-cap"></i></div>
+                    <h3>Beasiswa</h3>
+                    <p>Kemahasiswaan</p>
+                </a>
+            </div>
+
+            <div class="group-wa-container">
+                <a href="https://chat.whatsapp.com/FT5v66bOxOh9WLFTzUmY2Y?mode=ac_t" target="_blank" class="wa-btn">
+                    <i class="fa-brands fa-whatsapp"></i> Grup WhatsApp Kelas
+                </a>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; <span id="year"></span> Created by <strong>Gue Sendiri</strong></p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
